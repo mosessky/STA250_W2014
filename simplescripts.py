@@ -37,7 +37,7 @@ for line in con:
        if len(fieldList) > arrDelayind:
            if fieldList[arrDelayind] != 'NA' and fieldList[arrDelayind] != '':
 		tmpind = float(fieldList[arrDelayind])
-		#move calulation of mean and variance in later part
+		#move calulation of mean and variance into later part
                 '''
                 #update mean and variance
 		n += 1
