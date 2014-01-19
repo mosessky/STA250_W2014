@@ -11,7 +11,7 @@ info for your own data'''
 path=os.path.dirname(os.path.realpath(__file__))
 
 #absolute file name
-filename = path+"/Delays1987_2012.tar.bz2"
+filename = path+"/Delays1987_2013.tar.bz2"
 
 #set up connection for bzipfile input
 con = bz2.BZ2File(filename,'r')
@@ -19,6 +19,9 @@ frqtable={}
 
 #initial total number of observations
 n = 0 
+
+#initial start time
+start = time.clock()
 
 #input file line by line
 for line in con:
@@ -109,7 +112,12 @@ while (len(frqtable) > 0 and index < medind):
                medVal = minVal
                break
    
-print "mean value:", avgVal
-print "variance:", varVal
-print "median value:", medVal
+#get the excution computation time
+elapsed = (time.clock() - start)
+
+print "mean value: ", avgVal
+print "variance: ", varVal
+print "median value: ", medVal
+print "excution time: ", elapsed
+print "Computer Information: ", os.uname
 
