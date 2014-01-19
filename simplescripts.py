@@ -3,6 +3,7 @@
 import os
 import bz2
 import sys
+import time
 
 '''Please customized the following file and directory
 info for your own data'''
@@ -21,7 +22,7 @@ frqtable={}
 n = 0 
 
 #initial start time
-start = time.clock()
+start = time.time()
 
 #input file line by line
 for line in con:
@@ -113,11 +114,11 @@ while (len(frqtable) > 0 and index < medind):
                break
    
 #get the excution computation time
-elapsed = (time.clock() - start)
+elapsed = (time.time() - start)
 
 print "mean value: ", avgVal
 print "variance: ", varVal
 print "median value: ", medVal
 print "excution time: ", elapsed
-print "Computer Information: ", os.uname
+print "Computer Information: ", os.uname()
 
