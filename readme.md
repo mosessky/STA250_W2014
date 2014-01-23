@@ -1,11 +1,10 @@
 Single Process Mean, Variance and Median Value Calculation
 ==========================================================
-In this homework, I wrote four simple single process scripts 
-
-(simplescripts.py, sqlscripts.sh, Rhw1.r and Rsamplemethd.r) to 
+In this homework, I wrote four simple single process scripts (simplescripts.py, sqlscripts.sh, Rhw1.r and Rsamplemethd.r) to 
 
 find mean, variance and median value of flight departure time.
 
+-----------------------------------------------------------------
 The python script (simplescripts.py) directly reads from a bzip2 format file. 
 
 To run it, please just put the script into the same foler as data (Delay1987_2013.tar.bz2).
@@ -14,6 +13,8 @@ Then, use shell command "./simplescripts.py". I hard code the file name, but it 
 
 just adjusted very easily. I make put detailed comments into the codes.
 
+
+-------------------------------------------------------
 The shell script (sqlscripts.sh) call MYSQL to build up a database named "tmpAviation". 
 
 Inside this database, there are two tables "oldtable" and "newtable".
@@ -32,6 +33,8 @@ Warning: the database loading process is very slow and also it requires lots of 
 
 or powerful computer, just escape this one.)
 
+
+------------------------------------------------------
 The R Script (Rhw1.r) is a very customized data processing methods compared with the previous 
 
 two methods. It specifically calls shell commands to cut 15th and 45th column inside the text 
@@ -46,6 +49,8 @@ To run it, please put the just put the script into the same foler as data (Delay
 
 Then, use shell command "./Rhw1.r". I hard code the file name, but it should be just adjusted very easily.
 
+
+--------------------------------------
 The another R Script (Rsamplemethd.r) adopts the FastCSVSample library provided by Dr.Duncan. It's fast
 
 but not very accurate. Since I used very naive sample methods to get the records, so that might be the
