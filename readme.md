@@ -55,7 +55,7 @@ The another R Script (Rsamplemethd.r) adopts the FastCSVSample library provided 
 
 but not very accurate. Since I used very naive sample methods to get the records, so that might be the
 
-reason that it runs slow.
+reason that it is not very accurate.
 
 To run this one, you have to open Rstudio and change the directory to all the txt files sit in.
  
@@ -101,15 +101,15 @@ Results from Rsamplemethd.r
 --------------------------------
 Mean: 7.23786
 
-Variance: 1282.58238
+Variance: 707.256023
 
-Median: -4
+Median: 1
 
 System Information: 'Linux', 'i686' (Intel Xeon(TM) CPU 3.00GHz), 
 
 Memory 2.0 GB. (This is an old machine.)
 
-Computation Time: 1839.759 secs
+Computation Time: 317.759 secs
 
 Results from sqlscripts.sh
 ----------------------------
