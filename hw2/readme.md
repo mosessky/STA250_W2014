@@ -6,6 +6,7 @@ In this homework, I write a simple java multithread program to compute mean, sta
 The java program (Delays.java) reads the whole folder of *.csv airline delay data and computes the mean, median, and standard deviation. 
 
 To run it, type commands: java Delays /home/XXX/Data 
+
 Here, "/home/XXX/Data" is the absolute path that the data has been stored.
 
 Results from Delays.class byte codes:
