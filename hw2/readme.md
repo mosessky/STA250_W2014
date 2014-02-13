@@ -27,7 +27,7 @@ Meanwhile, I use a new laptop to run the program , hence the computation time im
 
 When I use the first method, I notice that there was an oppurtunity to start a thread pool to complete the same work. Hence, I wrote a thread pool java application (simpleThreadPool.java). With manually twisting the total number of threads inside the thread pool, I get faster computation time.
 
-Results from Delays.class byte codes:
+Results from simpleThreadPool.class byte codes:
 --------------------------------------------
 Mean: 6.566436
 
