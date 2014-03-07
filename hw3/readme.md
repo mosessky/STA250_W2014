@@ -13,6 +13,8 @@ Now, I test an round of initial algorithms (LinearSVM, BernoulliNB, MultinomialN
 
 The performance score is based on F scores (balanced result among accuracy and recall).
 
+In simple words, I found NearestCentroid has best F score on test dataset.
+-------------------------------------------------
 
 Here is the comparison result:
 ![Figure 1-1](compare_alg.png?raw=true)
