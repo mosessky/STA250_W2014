@@ -15,7 +15,7 @@ The performance score is based on F scores (balanced result among accuracy and r
 
 
 Here is the comparison result:
-![](hw3/compare_alg.png "Figure 1-1")
+![](hw3/compare_alg.png?raw=true)
 
 
 
