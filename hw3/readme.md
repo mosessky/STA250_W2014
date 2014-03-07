@@ -6,7 +6,7 @@ I use train.csv as training data and test.csv to compare different algorithms.
 precise_predictions.txt: this is the prediction results on test dataset by zzgmuntz
 en_precise_predictions.txt: this is the prediction results on test dataset by 
 
-Initial Draft Algorithm
+Initial Draft
 -------------------------------------------------
 
 Now, I test an round of initial algorithms (LinearSVM, BernoulliNB, MultinomialNB, NearestCentroid, SGDClassifier, SGDClassifier, L1LinearSVC, PassiveAggressiveClassifier, Perceptron).
@@ -15,6 +15,7 @@ The performance score is based on F scores (balanced result among accuracy and r
 
 
 Here is the comparison result:
-![Bilby Stampede](https://github.com/mosessky/STA250_W2014/tree/master/hw3/compare_alg.png)
+![](https://github.com/mosessky/STA250_W2014/tree/master/hw3/compare_alg.png?raw=true)
+
 
 
