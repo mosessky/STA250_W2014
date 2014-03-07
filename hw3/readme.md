@@ -5,12 +5,13 @@ So, my intial purpose is to test the suggested method and find better alternativ
 I use train.csv as training data and test.csv as test dataset to compare different algorithms' performance.
 
 precise_predictions.txt: this is the prediction results on test dataset by zzgmuntz
+
 en_precise_predictions.txt: this is the prediction results on test dataset by 
 
 Initial Draft
 -------------------------------------------------
 
-Now, I test an round of initial algorithms (LinearSVM, BernoulliNB, MultinomialNB, NearestCentroid, SGDClassifier, SGDClassifier, L1LinearSVC, PassiveAggressiveClassifier, Perceptron).
+Now, I test several initial algorithms (LinearSVM, BernoulliNB, MultinomialNB, NearestCentroid, SGDClassifier, SGDClassifier, L1LinearSVC, PassiveAggressiveClassifier, Perceptron).
 
 The performance score is based on F scores (balanced result among accuracy and recall).
 
