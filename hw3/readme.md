@@ -18,8 +18,6 @@ The performance score is based on F scores (balanced result among accuracy and r
 In simple words, I found NearestCentroid has best F score on test dataset.
 -------------------------------------------------
 
-Here is the comparison result:
+  
 ![Figure 1-1](compare_alg.png?raw=true)
-
-
-
+Seen from above figure, NearnestCentroid and BernoulliNB has desired score compared with other algorithms.
