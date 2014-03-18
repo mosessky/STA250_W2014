@@ -44,7 +44,7 @@ left: 400px;
       {name: "Mongo", id: "mongo.json"},
       {name: "Scala", id: "scala.json"}
 ],
-       graves = [0.6, 0.8, 0.9, 1.2, 1.6, 1.9],
+       graves = [0.6, 0.8, 0.9, 1.2],
        msizes = [1 , 2, 3, 4];
 
    var name = names[0].id;
