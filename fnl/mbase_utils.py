@@ -22,21 +22,6 @@ def drawImage( fmodel, Is, phis, drawIs = 1, lw = 10 ):
     except:    
         print "Error in Image input data"
 
-def ftrsCompIm(model, phis, Is, ftrData, imgIds, pStar, bboxes, occlPrm):
-     N = len(Is)
-     nChn = ftrData['nChn']
-     if imgIds.size == 0:
-         imgIds = range(N)
-     M = phis.shape[0]
-     pStar, phisN, distPup, sz, bboxes = compPhiStar(model, phis, Is, 10, imgIds, bboxes)
-     F = ftrData['xs'].shape[0]
-     ftrs = np.zeros((M,F), dtype = float)
-     useOccl = occlPrm['Stot'] >1
-     nfids = model['nfids']
-     occlD= np.array([])
-     rs = ftrData['xs'][:,1]
-     cs = ftrData['xs'][:,0]
-     xss = np.concatenate((cs, rs), axis = 0)
      
    
 #initial Train model
@@ -53,7 +38,7 @@ def initTr(Is, pGt, model, pStar, posInit, L, pad):
     for n in range(N):
         imgsIds = np.random.choice(np.concatenate((range(n),range(n+1,N)), axis = 0) , size = L, replace= False)
         for l in range(L):
-            maxDisp = posInit[n, 2:4]/18.0
+            maxDisp = posInit[n, 2:4]/16.0
             uncert= np.multiply((2 * np.random.rand(1,2) - 1), maxDisp)
             bbox=np.matrix(np.copy(posInit[n,:]))
             bbox[0, 0:2] += uncert
@@ -129,21 +114,7 @@ def compPhiStar(model, phis, Is, pad, imgIds, bboxes):
 
 '''
 Train single random fern regressor.
-[regSt, Y_pred] = trainFern(Y, X, S, prm)
-@param Y [N*D] target output values
-@param X [N*F] data measurements (features)
-@param S fern depth
-@param thrr fern bin thresholding
-@param reg  fern regularization term
 
-'''
-def trainFern(Y, X, S, thrr = [-0.2, 0.2], reg = 0.01):
-    N,D = Y.shape
-    fids = range(S)
-    thrs = np.random.uniform(thrr[0],thrr[1],size = S)
-    
-
-'''
 
 @param X     [N*F] data measurements
 @param fids  [S] fern range 
@@ -180,43 +151,7 @@ def fernsInd(X, fids, thrs, Y):
      return (inds, mu, sumys, counts, dfYs)
 
       
-'''
-Boosted regression using random ferns as the week regressor.
-Reference Paper: Greedy function approximation: A gradient boosting machine, Friedman, Annals of Statistics 2001
-@param type: 'res' default ('ave' performs well under limited condition)
-@param loss: 'L2' most robust and effective
-@param 'reg': 0.01 default 
-@param 'eta' (crucial to achieve good performance, especially on noisy data.)
-M - number of ferns
-R - number of repeats
-S - fern depth
-N - number samples
-F - number features
-        
-def fernsRegTrain( data, ys, type = 'res', loss = 'L2', S = 2, M = 50, thrr = [0, 1] ,R = 10, reg = 0.01, eta = 1, verbose = 0 ):
-         assert(type == 'res' or type == 'ave')
-         assert(loss == 'L2' or loss == 'L1' or loss == 'exp')
-         N = len(ys)
-         if type == 'ave':
-             eta = 1
-         fids = np.zeros((M,S))
-         thrs = np.zeros((M,S))
-         ysSum = np.zeros((N,1))
-         ysFern = np.zeros((np.power(2,S),M))
-         
-         for m in range(M):
-             if type == 'ave':
-                 d = m
-             else:
-                 d = 1
-             ysTar = d * ys - ysSum
-             best = {}
-             if loss == 'L1':
-                 e = np.sum(np.fabs(ysTar))
-             for r in range(R):
-                 fids1, thrs1, ysFern1, ys1 = trainFern()    
-             
-'''             
+            
              
 def dif(phis0, phis1):             
     
@@ -253,25 +188,28 @@ def initTest(Is, bboxes, model, pStar, pGtN, RT1):
 
 
 def ftrsOcclMasks(xs):
-    pos = np.array([])
-    pos = np.append(pos, np.arange(xs.size))
+    pos = np.empty(9, dtype = object)
+       
+    pos[0] =  np.arange(xs.shape[0])
     #top half
-    pos = np.append(pos, np.nonzero(xs[:,1] <= 0)[0] ) 
+    pos[1] =  np.nonzero(xs[:,1] <= 0)[0].getA()[0]  
     #bottom half
-    pos = np.append(pos, np.nonzero(xs[:,1 > 0])[0])
+    pos[2] =  np.nonzero(xs[:,1 > 0])[0].getA()[0]
     #right
-    pos = np.append(pos, np.nonzero(xs[:,0] >= 0)[0])
+    pos[3] =  np.nonzero(xs[:,0] >= 0)[0].getA()[0]
     #left 
-    pos = np.append(pos, np.nonzero(xs[:,0] < 0)[0])
+    pos[4] =  np.nonzero(xs[:,0] < 0)[0].getA()[0]
     #right top diagonal
-    pos = np.append(pos, np.nonzero(xs[:,0] >= xs[:,1])[0])
+    pos[5] =  np.nonzero(xs[:,0] >= xs[:,1])[0].getA()[0]
     #left bottom diagonal
-    pos = np.append(pos, np.nonzero(xs[:,0] < xs[:,1])[0])
+    pos[6] =  np.nonzero(xs[:,0] < xs[:,1])[0].getA()[0]
     #left top diagonal
-    pos = np.append(pos, np.nonzero(xs[:,0] * -1.0 >= xs[:,1])[0])
+    pos[7] =  np.nonzero(xs[:,0] * -1.0 >= xs[:,1])[0].getA()[0]
     #right bottom diagonal
-    pos = np.append(pos, np.nonzero(xs[:,0] * -1.0 < xs[:,1])[0])
+    pos[8] =  np.nonzero(xs[:,0] * -1.0 < xs[:,1])[0].getA()[0]
     
+    return pos
+
 #Generate random shape indexed features, relative to two landmarks (points in a line, RCRP contribution)
 def ftrsGenDup(model):
     type =  4
@@ -323,26 +261,30 @@ def getSzIm(Is):
 
 #codify Positions        
 def codifyPos(x, y, nrows, ncols):
-    nr = 1/nrows
-    nc = 1/ncols
-    x = np.min(1, np.max(0,x))
-    y = np.min(1, np.max(0,y))
-    y2 = y
-    x2 = x
+    nr = 1.0/nrows
+    nc = 1.0/ncols
+    x = np.minimum(1, np.maximum(0,x))
+    y = np.minimum(1, np.maximum(0,y))
+    y2 = np.copy(y)
+    x2 = np.copy(x)
+    #locate features to columns
     for c in range(ncols):
         if c == 0:
-            x2[x <= nc] = 1
+            x2[x <= nc] = 0
         elif c ==  ncols -1 :
-            x2[x >= nc * (c - 1)] = ncols
+            x2[x >= nc * c] = ncols - 1
         else:
-            x2 [y > nr*(c-1) & x <= nc *c] = c
+            x2[(x > nc * c) & (x <= nc * (c+1))] = c
+    #locate features to rows
     for r in range(nrows):
         if r==0:
-            y2[y<=nr] = 1
+            y2[y <= nr] = 0
         elif r == nrows - 1:
-            y2 [y >= nc * (r-1)] = nrows
+            y2[y >= nc * r ] = nrows - 1
         else:
-            x2[y > nr * (r-1) & x <= nr * r] = r
+            y2[(y > nr * r) & (y <= nr * (r+1))] = r
+    #translate column, row location into one dimension index
+    return np.ravel_multi_index([y2.astype(int), x2.astype(int)], (nrows, ncols))
 
 #Compute features from ftrsGenDup on Is
 def ftrsCompDup(model, phis, Is, ftrData, imgIds, pStar, bboxes, occlPrm):
@@ -359,7 +301,7 @@ def ftrsCompDup(model, phis, Is, ftrData, imgIds, pStar, bboxes, occlPrm):
      
    
     occl = phis[:, nfids*2: nfids*3]
-    occlD = {'featOccl': np.zeros((M,FTot), dtype = float), 'group': np.zeros((M,FTot), dtype = float)}
+    occlD = {'featOccl': np.zeros((M,FTot), dtype = int), 'group': np.zeros((M,FTot), dtype = int)}
     csStar, rsStar = getLinePoint(ftrData['xs'], pStar[0:nfids], pStar[nfids: nfids *2])   
     pos = ftrsOcclMasks(np.concatenate((np.matrix(csStar).T,np.matrix(rsStar).T), axis = 1))
     
@@ -370,9 +312,21 @@ def ftrsCompDup(model, phis, Is, ftrData, imgIds, pStar, bboxes, occlPrm):
         img = Is[imgIds[n]]
         h,w = img.shape
         
-        cs1[n,:] = np.max(1, np.min(w, cs1[n,:]))
-        rs1[n, :] = np.max(1, np.min(h, rs1[n,:]))
-                   
+        cs1[n,:] = np.maximum(0, np.minimum(w-1, cs1[n,:]))
+        rs1[n,:] = np.maximum(0, np.minimum(h-1, rs1[n,:]))
+        occlD['group'][n, :] = codifyPos((cs1[n, :] - bboxes[n,0])/bboxes[n,2], (rs1[n,:] - bboxes[n,1])/bboxes[n,3], occlPrm['nrows'], occlPrm['ncols'])
+        groupF = codifyPos((poscs[n, :] - bboxes[n,0])/bboxes[n,2], (posrs[n,:] - bboxes[n,1])/bboxes[n,3], occlPrm['nrows'], occlPrm['ncols'])          
+        
+        occlAm = np.zeros(nGroups, dtype = int)  
+        
+        for g in range(nGroups):
+            occlAm[g] = np.sum(occlD['group'][n, groupF == g])
+        occlD['featOccl'][n,:] = occlAm[occlD['group'][n,:]]    
+                
+        ftrs1 = img[rs1[n,:].astype(int), cs1[n,:].astype(int)].astype(float) / 255.0
+        ftrs[n, :] = ftrs1
+   
+    return (ftrs, occlD)    
                 
 def getLinePoint(FDxs, poscs, posrs):
   if len(poscs.shape) == 1: 
@@ -402,13 +356,18 @@ def getLinePoint(FDxs, poscs, posrs):
      x2 = poscs[:, l2]
      y2 = posrs[:, l2]
      a = (y2 - y1) / (x2 - x1)
+     
      b = y1 - np.multiply(a, x1)
+    
      distX = (x2 - x1) /2
      ctrX = x1 + distX
-     cs1 = ctrX + xs * distX
-     rs1 = a * cs1 + b
-     cs1 = np.round(cs1 + np.tile(muX, (1, poscs.shape[1])), 4)
-     rs1 = np.round(rs1 + np.tile(muY, (1, poscs.shape[1])), 4)
+     cs1 = ctrX + np.multiply(xs, distX)
+     rs1 = np.multiply(a, cs1) + b
+     np.place(rs1, cs1==x1, (y1[cs1 == x1] + ((y2 - y1)/2 + np.multiply(xs, (y2-y1)/2))[cs1==x1]).getA()[0,:])
+     
+    
+     cs1 = np.round(cs1 + np.tile(muX, (1, FDxs.shape[0] )))
+     rs1 = np.round(rs1 + np.tile(muY, (1, FDxs.shape[0] )))
        
   return (cs1, rs1)
                      
